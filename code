@@ -1,0 +1,244 @@
+import mysql.connector
+import datetime
+con=mysql.connector.connect(host='localhost',user='root',password='',database='Bank')
+cur=con.cursor()
+print("If you have an account press 1")
+print("if you have not any further account press 2")
+print("press 3 for Document verification")
+print("press 4 for nomniees")
+print("press 5 for your loan pass or not")
+print("press 6 for how many amount do you want")
+print('press 7 for creadit')
+print('press 8 for deposit')
+print('press 9 for transfor')
+print('press 10 for Balance enquery')
+print('press 11 for Password change')
+print('press 12 for Account summery')
+n=int(input("enter youe choice"))
+date=datetime.date.today()
+print("********<////////////////////>********")
+if n==1:
+    print('move forward to ur next step:')
+elif n==2:
+     A=input("enter your name")
+     N=input("enter your password")
+     G=input("enter your gender")
+     M=input("enter your mobile")
+     E=input("enter your email")
+     S=input("enter your state")
+     T=input("enter your city")
+     P=input("enter your zipcoad")
+     Z=input("enter your blance")
+
+     AC="PNB"
+     x=0
+     W="select * from account"
+     cur.execute(W)
+     for row in cur:
+          x=x+1
+     if x>0:
+        x=x+1
+        x=x+100
+        AC=AC+str(x)
+     else:
+        AC="PNB101"
+     s="insert into account values('"+AC+"','"+A+"','"+str(N)+"','"+G+"','"+str(M)+"','"+str(E)+"','"+S+"','"+T+"',"+str(P)+","+str(Z)+")" 
+     cur.execute(s)
+     con.commit()
+     print("sucessfull")
+     con.close()
+elif n==3:
+    a=input('enter your 10th roll')
+    n=input('enter your 10th marks')
+    d=input('enter your 10th percent')
+    g=input('enter your 12th roll')
+    m=input('enter your 12th marks')
+    e=input('enter your 12th percent')
+    c=input('enter your adhar_no')
+    s=input('enter your pan_no')
+    t=input('enter your father_adhar')
+    z='select * from document'
+    x=0
+    cur.execute(z)
+    for row in cur:
+        x=x+1
+    s="insert into document values('"+a+"','"+n+"','"+d+"','"+g+"',"+str(m)+",'"+e+"','"+c+"','"+s+"','"+t+"')" 
+    cur.execute(s)
+    con.commit()
+    print('sucessfull')
+    con.close()
+elif n==4:
+    q=input("enter name")
+    w=input("enter age")
+    e=input("enter account_no")
+    t=input("enter IFSC_code")
+    y=input("enter branch")
+    u=input("enter area")
+    i=input("relation")
+    Q="select * from office"
+    x=0
+    cur.execute(Q)
+    for row in cur:
+        x=x+1
+    l="insert into office(name,age,account_no,IFSC_code,branch,area,relation) values('"+q+"','"+w+"','"+e+"','"+t+"','"+y+"','"+u+"','"+i+"')"
+    cur.execute(l)
+    con.commit()
+    print("authanticon is sucessfull")
+    con.close()
+elif n==5:
+    print("your lone is pass please go foward to your amount:")
+elif n==6:
+    a=input("enter your account:")
+    d=input("enter amount do you want:")
+    m=input("confirm your amount")
+    x=0
+    s="select * from amount"
+    cur.execute(s)
+    for row in cur:
+        x=x+1
+    s="insert into amount (account,Deposit,money) values('"+a+"',"+str(d)+","+str(m)+")"
+    cur.execute(s)
+    con.commit()
+    print("your amount is deposited sucessfull")
+    con.close()
+elif n==7:
+     a=input("enter account number")
+     p=input("enter pin")
+     k="select * from account where account='"+a+"' and password='"+p+"'"
+     camt=0
+     x=0
+     cur.execute(k)
+     for d in cur:
+          x=x+1
+          camt=int(d[9])
+     if x>0:
+          wamt=int(input("enter amount to withdraw"))
+          if wamt<=camt:
+               camt=camt-wamt
+               m="update account set blance="+str(camt)+" where account='"+a+"'"
+               cur.execute(m)
+               con.commit()
+               s="insert into summary (account,transction,date,action,balence) values('"+a+"','"+str(wamt)+"','"+str(date)+"','withdraw','"+str(camt)+"')"
+               cur.execute(s)
+               con.commit()
+               print("after withdraw ",wamt," your current balence is =",camt)
+          else:
+               print("invalid account ")
+     else:
+               print("incorrect pin or account")
+elif n==8:
+     a=input("enter account number")
+     p=input("enter pin")
+     s="select * from account where account='"+a+"' and password='"+p+"'"
+     creadit=0
+     x=0
+     cur.execute(s)
+     for d in cur:
+          x=x+1
+          creadit=int(d[9])
+     if x>0:
+          damt=int(input("enter amount to Deposite"))
+          if damt<60000:
+               creadit=creadit+damt
+               s="update account set blance="+str(creadit)+" where account='"+a+"'"
+               cur.execute(s)
+               con.commit()
+               s="insert into summary (account,transction,date,action,balence) values('"+a+"','"+str(damt)+"','"+str(date)+"','deposite','"+str(creadit)+"')"
+               cur.execute(s)
+               con.commit()
+               print("after Deposite ",damt," your current balence is =",creadit)
+          else:
+               print("invalid")
+     else:
+                print("incorrect pin or account")
+elif n==9:
+     a=input("enter account number")
+     p=input("enter pin")
+     s="select * from account where account='"+a+"' and password='"+p+"'"
+     camt=0
+     x=0
+     cur.execute(s)
+     for d in cur:
+          x=x+1
+          camt=int(d[9])
+     if x>0:
+          fund=int(input("enter amount to transfor"))
+          if fund<=camt and fund>0:
+               camt=camt-fund
+               
+          else:
+               print("Invalid ")
+     else:
+                print("Invalid ACCOUNT OR PIN")
+     ac1=input("enter account no where you transfor")
+     b="select * from account where account='"+ac1+"'"
+     cur.execute(b)
+     camt1=0
+     x1=0
+     for row in cur:
+          x1=x1+1
+          camt1=int(row[9])
+     if x1>0 and x>0:
+          camt1=camt1+fund
+          d="update account set blance='"+str(camt1)+"'where account='"+ac1+"'"
+          cur.execute(d)
+          con.commit()
+          w="update account set blance='"+str(camt1)+"'where account='"+ac1+"'"
+          cur.execute(w)
+          con.commit()
+          s="insert into summary (account,transction,date,action,balence) values ('"+a+"','"+str(fund)+"','"+str(date)+"','transfor','"+str(camt)+"')"
+          cur.execute(s)
+          con.commit()
+          print("your amount is transfor")
+     else:
+          print("you have enter the worng amount")
+elif n==10:
+     a=input("enter account number")
+     p=input("enter pin")
+     s="select * from account where account='"+a+"' and password='"+p+"'"
+     camt=0
+     x=0
+     cur.execute(s)
+     for d in cur:
+          x=x+1
+          camt=int(d[9])
+     if x>0:
+         print("your Deposit blance is:=",camt)
+              
+     else:
+          print("Invalid ")
+elif n==11:
+     a=input("enter account number")
+     p=input("enter password")
+     s="select * from account where account='"+a+"' and password='"+p+"'"
+     camt=0
+     x=0
+     cur.execute(s)
+     for d in cur:
+          x=x+1
+     if x>0:
+          v=input("enter new password")
+          s="update account set password='"+v+"'where password='"+p+"'"
+          cur.execute(s)
+          con.commit()
+          print("password change sucssfull")
+     else:
+          print("enter worng password")
+elif n==12:
+     a=input("enter account number")
+     p=input("enter pin")
+     s="select * from account where account='"+a+"' and password='"+p+"'"
+     camt=0
+     x=0
+     cur.execute(s)
+     for d in cur:
+          x=x+1
+     if x>0:
+          s="select * from summary where account='"+a+"'"
+          cur.execute(s)
+          print("account\t","tranction\t","date\t","action\t","Balance")
+          for d in cur:
+               print(d[0],"\t",d[1],"\t",d[2],"\t",d[3],"\t",d[4],)
+          
+     else:
+          print("you have enter wrong account or password")
